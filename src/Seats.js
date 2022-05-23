@@ -6,8 +6,7 @@ import styled from "styled-components";
 import { Select } from "./Home";
 
 export default function Seats() {
-    //    const { idSessao } = useParams();
-    const idSessao = "126";
+    const { idSessao } = useParams();
     const [seats, setSeats] = React.useState([]);
     React.useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`);
@@ -21,18 +20,27 @@ export default function Seats() {
     const [formsName, setFormsName] = React.useState("");
     const [formsCPF, setFormsCPF] = React.useState("");
     const [formsSeats, setFormsSeats] = React.useState([]);
+    const [seatsOrdered, setSeatsOrdered] = React.useState([]);
+    const [order, setOrder] = React.useState({});
     let navigate = useNavigate();
 
     function placeOrder() {
         const regex = /^\d{11}$/
-        const order = {
-            ids: formsSeats,
-            name: formsName,
-            cpf: formsCPF
+        setOrder({
+               ids: formsSeats,
+               name: formsName,
+               cpf: formsCPF
+            });
+        const orderSuccess = {
+            ...order,
+            title: seats.movie.title,
+            day: seats.day.date,
+            time: seats.name,
+            seatsNumbers: seatsOrdered
         }
         if (order.ids.length>0 && order.name !== "" && order.cpf.match(regex)) {
             axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", order);
-            //navigate("/sucesso");
+            navigate("/sucesso", {state:{completedOrder: orderSuccess}});
         } else {
             alert("Preencha os campos corretamente");
         }
@@ -42,7 +50,7 @@ return (
         <>
         <Header />
         <StyledSeats>
-            <MainSeats seats={seats.seats} formSeats={formsSeats} setFormsSeats={setFormsSeats} />
+            <MainSeats seats={seats.seats} formSeats={formsSeats} setFormsSeats={setFormsSeats} seatsOrdered={seatsOrdered} setSeatsOrdered={setSeatsOrdered} />
             <Forms>
                 <label htmlFor="nome">Nome do comprador:</label>
                 <input id="nome" placeholder="Digite seu nome..." onChange={e => {setFormsName(e.target.value)}}></input>
@@ -64,7 +72,7 @@ return (
     );
 }
 
-function MainSeats({ seats, formsSeats, setFormsSeats }) {
+function MainSeats({ seats, formsSeats, setFormsSeats, seatsOrdered, setSeatsOrdered }) {
     return (
         <>
             <Select>
@@ -74,7 +82,7 @@ function MainSeats({ seats, formsSeats, setFormsSeats }) {
                 {
                     seats.map((seat, index) => (
                         <>
-                        <Button availability={seat.isAvailable} formsSeats={formsSeats} setFormsSeats={setFormsSeats} number={index + 1} key={index} id={seat.id} />
+                        <Button availability={seat.isAvailable} formsSeats={formsSeats} setFormsSeats={setFormsSeats} seatsOrdered={seatsOrdered} setSeatsOrdered={setSeatsOrdered} number={index + 1} key={index} id={seat.id} />
                         </>
                     ))
                 }
@@ -98,24 +106,29 @@ function MainSeats({ seats, formsSeats, setFormsSeats }) {
 }
 
 
-function Button({ id, number, availability, formsSeats, setFormsSeats }) {
+function Button({ id, number, availability, formsSeats, setFormsSeats, seatsOrdered, setSeatsOrdered }) {
     const [statusSeat, setStatusSeat] = React.useState(availability);
 
-    function selectSeat() {
+    function selectSeat(id, number) {
         const arraySeats = formsSeats;
+        const seatsNumbers = seatsOrdered;
         if (arraySeats.length === 0) {
             arraySeats.push(id);
+            seatsNumbers.push(number);
             setStatusSeat("selected");
         } else {
             if (arraySeats.includes(id)) {
                 arraySeats.filter((seat) => seat !== id);
+                seatsNumbers.filter((seat) => seat !== number);
                 setStatusSeat(true);
             } else {
                 arraySeats.push(id);
+                seatsNumbers.push(number);
                 setStatusSeat("selected");
             }
         }
         setFormsSeats(arraySeats);
+        setSeatsOrdered(seatsNumbers);
     }
 
     function busySeat() {

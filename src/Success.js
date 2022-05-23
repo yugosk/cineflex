@@ -1,9 +1,10 @@
 import React from "react";
 import Header from "./Header";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
-export default function Success({ tickets }) {
+export default function Success() {
+    const { state } = useLocation();
     return (
         <>
         <Header />
@@ -12,12 +13,42 @@ export default function Success({ tickets }) {
         </StyledSuccess>
         <MovieSuccess>
             <h2>Filme e sessão</h2>
-            <p>Enola Holmes</p>
-            <p>24/06/2021 15:00</p>
+            <p>{state.completedOrder.title}</p>
+            <p>{state.completedOrder.day} {state.completedOrder.time}</p>
         </MovieSuccess>
+        <MovieSuccess>
+            <h2>Ingressos</h2>
+        {
+            state.completedOrder.seatsNumbers.map((number, index) => {
+                <p key={index}>Assento {number}</p>
+            })
+        }
+        </MovieSuccess>
+        <MovieSuccess>
+            <h2>Comprador</h2>
+            <p>Nome: {state.completedOrder.name}</p>
+            <p>CPF: {state.completedOrder.cpf}</p>
+        </MovieSuccess>
+        <Link to="/">
+            <ButtonHome>Voltar para Home</ButtonHome>
+        </Link>
         </>
     );
 }
+
+const ButtonHome = styled.div`
+    width: 60%;
+    height: 42px;
+    background-color: #e8833a;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    color: #ffffff;
+    margin-top: 75px;     
+`
 
 const StyledSuccess = styled.div`
     height: 110px;
