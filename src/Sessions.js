@@ -29,7 +29,6 @@ export default function Sessions() {
 }
 
 function MainSessions(props) {
-    console.log(props.times);
     return (
     <StyledSessions>
         <Select>
@@ -64,6 +63,20 @@ function SessionTimes(props) {
                     </MovieSession>
                 ))}
         </StyledMain>
+    );
+}
+
+
+function Footer(props) {
+    return (
+        <StyledFooter>
+            <BannerFooter>
+                <img src={props.movieBanner} />
+            </BannerFooter>
+            <TextFooter>
+                <p>{props.movieName}</p>
+            </TextFooter>
+        </StyledFooter>
     );
 }
 
@@ -116,19 +129,6 @@ const Times = styled.div`
     justify-content: flex-start;
 `
 
-function Footer(props) {
-    return (
-        <StyledFooter>
-            <BannerFooter>
-                <img src={props.movieBanner} />
-            </BannerFooter>
-            <TextFooter>
-                <p>{props.movieName}</p>
-            </TextFooter>
-        </StyledFooter>
-    );
-}
-
 const StyledFooter = styled.div`
     width: 100%;
     height: 117px;
@@ -143,8 +143,8 @@ const StyledFooter = styled.div`
     padding-left: 10px;
 `
 const BannerFooter = styled.div`
-    width: 13%;
-    height: 62%;
+    width: 64px;
+    height: 88px;
     display: flex;
     align-items: center;
     justify-content: center;
