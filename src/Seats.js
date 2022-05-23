@@ -39,7 +39,7 @@ export default function Seats() {
         }
         if (order.ids.length>0 && order.name !== "" && order.cpf.match(regex)) {
             axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", order);
-            navigate("/sucesso", {state:{completedOrder: orderSuccess}});
+            navigate("/sucesso", {state:orderSuccess});
         } else {
             alert("Preencha os campos corretamente");
         }
@@ -60,15 +60,15 @@ return (
         </StyledSeats>
         <LastFooter>
             <BannerLastFooter>
-                <img src={seats.movie.posterURL}/>
+                <img src={seats.posterURL}/>
             </BannerLastFooter>
-            <TextLastFooter>
-                <p>{seats.movie.title}</p>
-                <p>{seats.day.weekday} - {seats.name}</p>
-            </TextLastFooter>
         </LastFooter>
         </>
     );
+//            <TextLastFooter>
+//                <p>{seats.movie.title}</p>
+//                <p>{seats.day.weekday} - {seats.name}</p>
+//            </TextLastFooter>
 }
 
 function MainSeats({ seats, formsSeats, setFormsSeats, seatsOrdered, setSeatsOrdered }) {
@@ -77,7 +77,7 @@ function MainSeats({ seats, formsSeats, setFormsSeats, seatsOrdered, setSeatsOrd
             <Select>
                 <h2>Selecione o(s) assento(s)</h2>
             </Select>
-            <SeatsListing>
+            {/* <SeatsListing>
                 {
                     seats.map((seat, index) => (
                         <>
@@ -85,7 +85,7 @@ function MainSeats({ seats, formsSeats, setFormsSeats, seatsOrdered, setSeatsOrd
                         </>
                     ))
                 }
-            </SeatsListing>
+            </SeatsListing> */}
             <StyledExample>
                 <SeatsExample>
                     <SelectedSeat></SelectedSeat>

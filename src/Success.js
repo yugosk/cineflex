@@ -13,21 +13,21 @@ export default function Success() {
         </StyledSuccess>
         <MovieSuccess>
             <h2>Filme e sessão</h2>
-            <p>{state.completedOrder.title}</p>
-            <p>{state.completedOrder.day} {state.completedOrder.time}</p>
+            <p>{state.title}</p>
+            <p>{state.day} {state.completedOrder.time}</p>
         </MovieSuccess>
         <MovieSuccess>
             <h2>Ingressos</h2>
         {
-            state.completedOrder.seatsNumbers.map((number, index) => {
+            state.seatsNumbers.map((number, index) => {
                 <p key={index}>Assento {number}</p>
             })
         }
         </MovieSuccess>
         <MovieSuccess>
             <h2>Comprador</h2>
-            <p>Nome: {state.completedOrder.name}</p>
-            <p>CPF: {state.completedOrder.cpf}</p>
+            <p>Nome: {state.name}</p>
+            <p>CPF: {state.cpf}</p>
         </MovieSuccess>
         <Link to="/">
             <ButtonHome>Voltar para Home</ButtonHome>
