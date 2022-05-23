@@ -13,7 +13,6 @@ export default function Seats() {
     
         promise.then((response) => {
             setSeats(response.data);
-            console.log(seats)
         });
     }, []);
 
@@ -56,7 +55,7 @@ return (
                 <input id="nome" placeholder="Digite seu nome..." onChange={e => {setFormsName(e.target.value)}}></input>
                 <label htmlFor="cpf">CPF do comprador:</label>
                 <input id="cpf" placeholder="Digite seu CPF..." onChange={e => {setFormsCPF(e.target.value)}}></input>
-                <button onClick={placeOrder}>Reservar assento(s)</button>
+                <button onClick={() => placeOrder()}>Reservar assento(s)</button>
             </Forms>
         </StyledSeats>
         <LastFooter>
